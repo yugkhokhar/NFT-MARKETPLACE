@@ -1,31 +1,33 @@
-const { network, ethers } = require('hardhat')
+const { frontEndContractsFile } = require('../hardhat-helper')
+require('dotenv').config()
 const fs = require('fs')
-const pathofFrontend =
-  '../../next-js-MarketPlace-moralis/constants/contract.json'
+const { network } = require('hardhat')
 
 module.exports = async () => {
-  if (process.env.UPDATE_FRONT_END) {
-    await updateFrontEnd()
+  if (process.env.UPDATE_IN_FRONTEND) {
+    console.log('Writing to front end...')
+    await updateContractAddresses()
+    console.log('Front end written!')
   }
 }
 
-const updateFrontEnd = async () => {
-  const contract = await ethers.getContract('NftMarketplace')
-  const chainid = network.config.chainId.toString()
-  const contractaddressjson = JSON.parse(
-    fs.readFileSync(pathofFrontend, 'utf8'),
+async function updateContractAddresses() {
+  const chainId = network.config.chainId.toString()
+  const nftMarketplace = await ethers.getContract('NftMarketplace')
+  const contractAddresses = JSON.parse(
+    fs.readFileSync(frontEndContractsFile, 'utf8'),
   )
-
-  if (chainid in contractaddressjson) {
+  if (chainId in contractAddresses) {
     if (
-      !contractaddressjson[chainid]['NftMarketplace'].includes(contract.address)
+      !contractAddresses[chainId]['NftMarketplace'].includes(
+        nftMarketplace.address,
+      )
     ) {
-      contractaddressjson[chainid]['NftMarketplace'].push(contract.address)
+      contractAddresses[chainId]['NftMarketplace'].push(nftMarketplace.address)
     }
   } else {
-    contractaddressjson[chainid] = { "NftMarketplace": [contract.address] }
+    contractAddresses[chainId] = { NftMarketplace: [nftMarketplace.address] }
   }
-  fs.write(pathofFrontend, JSON.stringify(contractaddressjson))
+  fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
 }
-
 module.exports.tags = ['all', 'frontend']
