@@ -1,14 +1,32 @@
-const { frontEndContractsFile } = require('../hardhat-helper')
+const {
+  frontEndContractsFile,
+  frontEndAbiLocation,
+} = require('../hardhat-helper')
 require('dotenv').config()
 const fs = require('fs')
-const { network } = require('hardhat')
+const { network, ethers } = require('hardhat')
 
 module.exports = async () => {
   if (process.env.UPDATE_IN_FRONTEND) {
     console.log('Writing to front end...')
     await updateContractAddresses()
+    await updateAbi()
     console.log('Front end written!')
   }
+}
+
+async function updateAbi() {
+  const nftMarketplace = await ethers.getContract('NftMarketplace')
+  fs.writeFileSync(
+    `${frontEndAbiLocation}NftMarketplace.json`,
+    nftMarketplace.interface.format(ethers.utils.FormatTypes.json),
+  )
+
+  const basicNft = await ethers.getContract('BasicNft')
+  fs.writeFileSync(
+    `${frontEndAbiLocation}BasicNft.json`,
+    basicNft.interface.format(ethers.utils.FormatTypes.json),
+  )
 }
 
 async function updateContractAddresses() {

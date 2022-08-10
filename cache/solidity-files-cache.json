@@ -438,8 +438,8 @@
       ]
     },
     "C:\\Users\\Ankit\\Desktop\\Project\\Blockchain\\Solidity\\NFT-MARKETPLACE\\contracts\\NftMarketplace.sol": {
-      "lastModificationDate": 1659986718860,
-      "contentHash": "876e4cea72e280c74f4f1e791de02ece",
+      "lastModificationDate": 1660125872025,
+      "contentHash": "33d523ad1e47cfb47bfc146bcfeee9ab",
       "sourceName": "contracts/NftMarketplace.sol",
       "solcConfig": {
         "version": "0.8.8",
