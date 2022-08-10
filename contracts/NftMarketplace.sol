@@ -95,7 +95,7 @@ contract NftMarketplace is ReentrancyGuard {
     )
         external
         isOwner(nftaddress, tokenid, msg.sender)
-        notListed(nftaddress, tokenid,msg.sender)
+        notListed(nftaddress, tokenid, msg.sender)
     {
         if (price < 0) {
             revert PriceMustBeAboveZero();
@@ -108,7 +108,7 @@ contract NftMarketplace is ReentrancyGuard {
 
         s_listings[nftaddress][tokenid] = Listing(price, msg.sender);
 
-        emit ItemListed(nftaddress, msg.sender, tokenid,price );
+        emit ItemListed(nftaddress, msg.sender, tokenid, price);
     }
 
     /*
