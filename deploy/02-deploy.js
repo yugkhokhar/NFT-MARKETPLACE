@@ -6,7 +6,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deployer } = await getNamedAccounts()
 
   const args = []
-  const deployContract = await deploy('BasicNft', {
+  const deployContract = await deploy('Landmint', {
     from: deployer,
     log: true,
     args: args,
@@ -14,7 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   })
 
   if (
-    !developmentChains.includes(network.name) &&
+     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
     log('----VERIFYING----')
